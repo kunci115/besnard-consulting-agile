@@ -28,13 +28,13 @@ class ListValuesDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListPrinciple(generics.ListCreateAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     queryset = ContextPrinciple.objects.all()
     serializer_class = PrincipleSerializer
 
 
 class ListPrincipleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.AllowAny]
     serializer_class = PrincipleSerializer
     model = serializer_class.Meta.model
 
