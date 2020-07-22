@@ -72,7 +72,61 @@ def create_principles(client):
     r = client.post('/api/principle/all/',
         {
         "title": "Satisfy the Customer",
-        "values_desc": "Business people and developers must work together daily throughout the project. It makes sense for the customer to become part of the team.  After all, both the developers and the customers have the same goal; to deliver valuable software."
+        "principles_desc": "Business people and developers must work together daily throughout the project. It makes sense for the customer to become part of the team.  After all, both the developers and the customers have the same goal; to deliver valuable software."
     }, format='json')
 
     return r
+
+
+def put_principle(client, id):
+    r = client.put('/api/principle/{}/'.format(id),
+        {
+        "title": "Build Projects",
+        "principles_desc": "Build projects around motivated individuals. Give them the environment and support they need, and trust them to get the job done. Agile projects emphasize self-organizing teams who instinctively are able to manage both themselves and the work.  The micromanagement of projects is no longer required or beneficial."}, format='json')
+
+    return r
+
+
+def delete_principle(client, id):
+    r = client.delete('/api/principle/{}/'.format(id),
+        {
+            "id": id
+        }, format='json')
+
+    return r
+
+
+def get_all_principle(client):
+    r = client.get('/api/principle/all/',format='json')
+    return json.loads(r.content)
+
+
+@pytest.mark.django_db()
+def test_add_new_principle(api_client):
+    r = create_principles(api_client)
+    assert r.status_code == 201
+
+
+@pytest.mark.django_db()
+def test_get_values_all(api_client):
+    create_principles(api_client)
+    r = get_all_principle(api_client)
+    assert len(r) == 2
+
+
+@pytest.mark.django_db()
+def test_put_principle(api_client):
+    all_principle = get_all_principle(api_client)
+    principle_id = all_principle[0]['id']
+    r = put_principle(api_client, id=principle_id)
+    new_principle = json.loads(r.content)
+    assert r.status_code == 200
+    assert new_principle['title'] == "Build Projects"
+
+
+@pytest.mark.django_db()
+def test_delete_principle(api_client):
+    all_principle = get_all_values(api_client)
+    principle_id = all_principle[0]['id']
+    r = delete_principle(api_client, id=principle_id)
+    assert r.status_code == 204
