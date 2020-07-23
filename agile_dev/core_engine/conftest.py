@@ -1,12 +1,22 @@
 import pytest
+import base64
+
+from django.contrib.auth.models import User
+
 from .models import ContextValues, ContextPrinciple
+
+@pytest.fixture(autouse=True)
+def add_user():
+    m = User.objects.create(email="kunci115@gmail.com", password="123besnard123", username="kunci115")
 
 
 @pytest.fixture(autouse=True)
 def api_client():
     from rest_framework.test import APIClient
-
-    return APIClient()
+    credentials = base64.b64encode(f'{"kunci11"}:{"123besnard123"}'.encode('utf-8'))
+    client = APIClient()
+    client.credentials(HTTP_AUTHORIZATION='Basic {}'.format(credentials.decode('utf-8')))
+    return client
 
 
 @pytest.fixture(autouse=True)

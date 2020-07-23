@@ -1,9 +1,9 @@
 import pytest
 from django.urls import reverse
 import json
+import base64
 
-
-def create_values(client: object) -> object:
+def create_values(client):
     r = client.post(
         "/api/values/all/",
         {
@@ -16,7 +16,7 @@ def create_values(client: object) -> object:
     return r
 
 
-def put_values(client: object, id: object) -> object:
+def put_values(client, id) :
     r = client.put(
         "/api/values/{}/".format(id),
         {
@@ -29,19 +29,20 @@ def put_values(client: object, id: object) -> object:
     return r
 
 
-def delete_values(client: object, id: object) -> object:
+def delete_values(client, id):
     r = client.delete("/api/values/{}/".format(id), {"id": id}, format="json")
 
     return r
 
 
-def get_all_values(client: object) -> object:
+def get_all_values(client):
     r = client.get("/api/values/all/", format="json")
     return json.loads(r.content)
 
 
 @pytest.mark.django_db()
-def test_add_new_values(api_client: object) -> object:
+def test_add_new_values(api_client):
+
     r = create_values(api_client)
 
     assert r.status_code == 201
@@ -86,6 +87,7 @@ def create_principles(client):
 
 
 def put_principle(client, id):
+    client.session()
     r = client.put(
         "/api/principle/{}/".format(id),
         {

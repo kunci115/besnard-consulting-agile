@@ -1,7 +1,7 @@
 from typing import Type, List
 
 from rest_framework import permissions
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import IsAuthenticated
 
 from .models import ContextValues
 from rest_framework import generics
@@ -13,13 +13,13 @@ from .serializers import PrincipleSerializer
 
 
 class ListValues(generics.ListCreateAPIView):
-    permission_classes: List[Type[AllowAny]] = [permissions.AllowAny]
+    permission_classes: List[Type[IsAuthenticated]] = [permissions.IsAuthenticated]
     queryset = ContextValues.objects.all()
     serializer_class: Type[ValuesSerializer] = ValuesSerializer
 
 
 class ListValuesDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes: List[Type[AllowAny]] = [permissions.AllowAny]
+    permission_classes: List[Type[IsAuthenticated]] = [permissions.IsAuthenticated]
     serializer_class: Type[ValuesSerializer] = ValuesSerializer
     model: Type[ContextValues] = serializer_class.Meta.model
 
@@ -33,13 +33,13 @@ class ListValuesDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
 
 
 class ListPrinciple(generics.ListCreateAPIView):
-    permission_classes: List[Type[AllowAny]] = [permissions.AllowAny]
+    permission_classes: List[Type[IsAuthenticated]] = [permissions.IsAuthenticated]
     queryset = ContextPrinciple.objects.all()
     serializer_class: Type[PrincipleSerializer] = PrincipleSerializer
 
 
 class ListPrincipleDetailAPIView(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes: List[Type[AllowAny]] = [permissions.AllowAny]
+    permission_classes: List[Type[IsAuthenticated]] = [permissions.IsAuthenticated]
     serializer_class: Type[PrincipleSerializer] = PrincipleSerializer
     model: Type[ContextPrinciple] = serializer_class.Meta.model
 
