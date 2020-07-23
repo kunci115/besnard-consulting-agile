@@ -10,6 +10,7 @@ django = "*"
 djangorestframework = "*"
 pytest-django = "*"
 pytest-cov = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
